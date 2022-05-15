@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/36e5c98c7f.js" crossorigin="anonymous"></script>
+     <title>Document</title>
+     <link rel="stylesheet" href="comman.css">
+   
+</head>
+<body>
+      
+    <div id="navbar">
+        <div> <i class="fa-solid fa-bars"></i><img src="https://secure-media.hotstarext.com/web-assets/prod/images/brand-logos/disney-hotstar-logo-dark.svg" alt=""></div>
+        <div>
+            <button>TV</button>
+            <button>Movie</button>
+            <button>Sports</button>
+            <button>Disney+</button>
+            <button>kids</button>
+        </div>
+        <div id="tm">Treanding movies</div>
+
+        <div>
+        <a href="index.html"><button>home</button></a>
+            <button>LOGIN</button>
+        </div>
+        
+
+    </div>
+
+
+    <div id="container"></div>
+</body>
+</html>
+
+<script>
+
+
+ const url =  "https://api.themoviedb.org/3/trending/all/day?api_key=e2a3c39737f9eae89e720048c0298158"
+
+ fetch(url)
+ .then((res)=>{
+     return res.json();
+
+ })
+ .then((res)=>{
+     console.log(res.results)
+     append(res.results)
+ })
+ .catch((err)=>{
+     console.log("err",err)
+ })
+
+ const append=(movies)=>{
+      
+    movies.map(function(elem){
+
+        let div = document.createElement("div")
+            let p_link ="https://image.tmdb.org/t/p/w500/"
+            let poster= document.createElement("img")
+            poster.src = p_link+elem.poster_path;
+            poster.setAttribute("id","poster")
+
+
+            let title = document.createElement("h4")
+            title.textContent=elem.original_title;
+
+            let rating = document.createElement("h4")
+            rating.textContent=  ` imbd rating: ${elem.vote_average}`
+        
+
+            let rdate = document.createElement("h4")
+            rdate.textContent=elem.release_date;
+       div.append(poster,title,rating,rdate)
+
+       document.querySelector("#container").append(div)
+
+    })      
+
+    
+    
+ }
+
+
+
+</script>

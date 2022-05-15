@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/36e5c98c7f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="comman.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="navbar">
+        <div> <i class="fa-solid fa-bars"></i><img src="https://secure-media.hotstarext.com/web-assets/prod/images/brand-logos/disney-hotstar-logo-dark.svg" alt=""></div>
+        <div>
+            <button>TV</button>
+            <button>Movie</button>
+            <button>Sports</button>
+            <button>Disney+</button>
+            <button>kids</button>
+        </div>
+        <div><input oninput="debounced(main,1000)" type="text" id="query"><i class="fa-solid fa-magnifying-glass"></i><div id="movies"></div></div>
+
+        <div>
+        <a href="trending.html"><button> Tranding movies</button></a>
+            <button>LOGIN</button>
+        </div>
+        
+
+    </div>
+
+
+    <div id="container"></div>
+</body>
+</html>
+
+<script>
+
+// https://www.omdbapi.com/?apikey=6a41ddca&s=om_shanti_om
+
+let movies_div = document.getElementById("movies")
+let id;
+
+async function searchMovies(){
+try{
+ const query = document.getElementById("query").value
+
+ const res = await fetch(`https://www.omdbapi.com/?apikey=607b038c&s=${query}`);
+
+ const data = await res.json();
+
+ const movies = data.Search;
+ console.log(movies)
+
+ return movies;
+ 
+ }
+ catch(err){
+     console.log("err",err);
+ }
+}
+
+function appendMovies(data){
+
+    if(data===undefined){
+        return false;
+    }
+
+     movies_div.innerHTML=null;
+
+    data.forEach(function(elem){
+        let div = document.createElement("div")
+        div.setAttribute("id","insidesearchdiv")
+
+        let  p = document.createElement("h4")
+        p.innerText=elem.Title;
+
+        let img = document.createElement("img")
+        img.src =elem.Poster;
+        img.setAttribute("id","searchgimg")
+        img.addEventListener("click",function(){
+            pt(elem) 
+        })
+        
+
+        p.addEventListener("click",function(){
+            pt(elem)
+        })
+
+        div.append(img,p,)
+
+        movies_div.append(div);
+    });
+}
+
+function pt(elem){
+
+    let div = document.createElement("div")
+
+    let image = document.createElement("img")
+    image.src = elem.Poster;
+
+    
+    let title = document.createElement("h4")
+    title.textContent=elem.Title;
+
+
+    let yor = document.createElement("h4")
+    yor.textContent=elem.Year;
+
+    div.append(image,title,yor)
+
+    document.getElementById('container').append(div)
+
+
+
+    
+    
+}
+
+async function main(){
+    let data = await searchMovies();
+
+    if(data===undefined){
+        return false;
+    }
+
+    appendMovies(data);
+}
+
+function debounced(func,delay){
+
+    if(id){
+        clearTimeout(id)
+    }
+   id= setTimeout(function(){
+        func();
+    },delay)
+}
+
+
+</script>
